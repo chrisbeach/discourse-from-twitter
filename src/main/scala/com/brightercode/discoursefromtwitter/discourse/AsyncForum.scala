@@ -3,17 +3,14 @@ package com.brightercode.discoursefromtwitter.discourse
 import java.util
 import java.util.concurrent.LinkedBlockingQueue
 
-import com.brightercode.discourse.DiscourseForumApiClient
 import com.brightercode.discourse.DiscourseForumApiClient.withDiscourseForum
 import com.brightercode.discourse.exceptions.RateLimitException
 import com.brightercode.discourse.model.TopicTemplate
-import com.brightercode.discoursefromtwitter.Runner.discourseConfig
+import com.brightercode.discourse.{DiscourseEndpointConfig, DiscourseForumApiClient}
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.collection.JavaConverters._
 import scala.concurrent.duration._
-import com.brightercode.discourse.util.TypesafeConfigHelper._
-
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.language.postfixOps
 
@@ -23,7 +20,8 @@ import scala.language.postfixOps
   * @param topicQueueSize maximum number of topics to queue
   * @param ec execution context on which to run background thread
   */
-class AsyncForum(topicQueueSize: Int = 1000)
+class AsyncForum(config: DiscourseEndpointConfig,
+                 topicQueueSize: Int = 1000)
                 (implicit ec: ExecutionContext) extends LazyLogging {
 
   private val queue = new LinkedBlockingQueue[TopicTemplate](topicQueueSize)
@@ -32,12 +30,12 @@ class AsyncForum(topicQueueSize: Int = 1000)
 
   Future {
     Thread.currentThread().setName("Async forum")
-    withDiscourseForum(discourseConfig) { forum =>
+    withDiscourseForum(config) { forum =>
       while (true) {
         try {
           val outstandingTopics = new util.ArrayList[TopicTemplate]()
           queue.drainTo(outstandingTopics)
-          process(forum, outstandingTopics.asScala.toList)
+          createTopics(forum, outstandingTopics.asScala.toList)
         } catch {
           case e: RateLimitException => sleepForRateLimit(e)
           case e: Exception => logger.warn(e.getMessage, e)
@@ -45,13 +43,14 @@ class AsyncForum(topicQueueSize: Int = 1000)
         }
       }
     }
+    logger.error("Thread unexpectedly died, exiting app")
     System.exit(1)
   }
 
-  private def process(forum: DiscourseForumApiClient, topics: List[TopicTemplate]): Unit =
+  private def createTopics(forum: DiscourseForumApiClient, topics: List[TopicTemplate]): Unit =
     if (topics.nonEmpty) {
       logger.debug(s"${topics.size} topic(s) outstanding. Taking first.")
-      topics.headOption.foreach { topic =>
+      topics.foreach { topic =>
         try {
           val createdTopic = Await.result(forum.topics.create(topic), 10 seconds)
           logger.info(createdTopic.toString)

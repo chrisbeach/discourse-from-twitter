@@ -1,33 +1,35 @@
 discourse {
-  # Your forum address (no trailing slash)
-  url = "https://your.discourse.forum"
+    endpoint {
+        # Your forum address (no trailing slash)
+        url = "https://your.discourse.forum"
 
-  # See https://[your forum]/admin/api/keys
-  key = "your API key"
+        # See https://[your forum]/admin/api/keys
+        key = "your API key"
 
-  # Existing forum user. Bot will post as this user
-  username = "SomeUsername"
+        # Existing forum user. Bot will post as this user
+        username = "SomeUsername"
 
-  # Timeout for API calls
-  timeout = 5 seconds
+        # Timeout for API calls
+        timeout = 5 seconds
+    }
 
-  # Category id to post in
-  categoryId = 1
+    # Category id to post in
+    categoryId = 1
 }
 
 twitter {
-  consumer {
-    key = "my-consumer-key"
-    secret = "my-consumer-secret"
-  }
-  access {
-    key = "my-access-key"
-    secret = "my-access-secret"
-  }
+    consumer {
+        key = "my-consumer-key"
+        secret = "my-consumer-secret"
+    }
+    access {
+        key = "my-access-key"
+        secret = "my-access-secret"
+    }
 
-  # Search terms
-  tracks = []
+    # Search terms
+    tracks = []
 
-  # User Ids
-  follow = []
+    # User Ids
+    follow = []
 }

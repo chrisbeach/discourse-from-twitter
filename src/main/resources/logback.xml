@@ -9,6 +9,7 @@
     </appender>
 
     <logger name="com.brightercode" level="debug" />
+    <logger name="play" level="trace" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />
