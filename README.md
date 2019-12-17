@@ -10,15 +10,17 @@ Discourse forum.
 Customise [src/main/resources/application.conf.sample](src/main/resources/application.conf.sample) 
 and save as `src/main/resources/application.conf` 
 
-## Publishing Docker Image
+## Publishing Docker Image Locally
 
     sbt docker:publishLocal
+    
+(the latest image is also available on Docker Hub)
 
 ## Running Using Docker
 
 Substitute the path to your application.conf file
 
-    docker run -v [path to]application.conf:/application.conf -d discourse-from-twitter:0.2
+    docker run -v [path to]application.conf:/application.conf -d chrisbeach/discourse-from-twitter:0.2
     
     
 ### Notes
