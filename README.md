@@ -5,8 +5,8 @@ Discourse forum.
 
 ## Configuration
 
-Customise [src/main/resources/application.conf.sample](src/main/resources/application.conf.sample) and save as
-`src/main/resources/application.conf` 
+Customise [src/main/resources/application.conf.sample](src/main/resources/application.conf.sample) 
+and save as `src/main/resources/application.conf` 
 
 ## Publishing Docker Image
 
@@ -14,5 +14,11 @@ Customise [src/main/resources/application.conf.sample](src/main/resources/applic
 
 ## Running Using Docker
 
-    docker run -d discourse-from-twitter:0.1
+Substitute the path to your application.conf file
+
+    docker run -v [path to]application.conf:/application.conf -d discourse-from-twitter:0.2
     
+    
+#### Notes
+
+* `src/universal/conf/application.ini` contains arguments including the config file location
