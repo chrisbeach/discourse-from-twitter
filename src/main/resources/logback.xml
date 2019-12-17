@@ -9,6 +9,7 @@
     </appender>
 
     <logger name="com.brightercode" level="debug" />
+    <logger name="play.shaded.ahc.io.netty" level="info" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />
