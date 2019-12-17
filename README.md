@@ -23,4 +23,4 @@ Substitute the path to your application.conf file
     
 ### Notes
 
-  * `src/universal/conf/application.ini` contains arguments including the config file location
+* `src/universal/conf/application.ini` contains arguments including the config file location
