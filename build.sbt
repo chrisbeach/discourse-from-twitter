@@ -1,6 +1,7 @@
 import sbt.Keys.mainClass
 
 name := "discourse-from-twitter"
+packageName in Docker := "chrisbeach/discourse-from-twitter"
 version := "0.2"
 scalaVersion := "2.12.10"
 
