@@ -2,4 +2,4 @@
 /project/target
 /discourse-scala-client/target
 /discourse-scala-client/project/target
-/src/main/resources/application.conf
+/src/main/resources/*.conf
